@@ -4,6 +4,7 @@ from gtts import gTTS
 import os
 import sys
 import speech_recognition as sr
+from langdetect import detect
 def take_audio_input():
     recognizer = sr.Recognizer()
     with sr.Microphone() as source:
@@ -24,6 +25,10 @@ def transcribe_audio(audio_data):
     except sr.RequestError as e:
         print("Could not translate due to unexpected error.")
         sys.exit()
+
+def language_detect(audio):
+    language=detect(audio)
+    return language
         
 def translate_text(text, lang1, lang2):
     try:
@@ -36,11 +41,23 @@ def translate_text(text, lang1, lang2):
 def main():
     audio_data = take_audio_input()
     text = transcribe_audio(audio_data)
+    language=language_detect(text)
     print(text)
-    lang1 = input("Enter the language from which conversion has to take place ")
-    lang2 = input("Enter the language to be converted to ")
-    translated_text = translate_text(text, lang1, lang2)
-    print(translated_text)
+    print('Your language is: ',language)
+    verify=input('Is this your language?Yes(y) or No(n): ')
+    if(verify=='y'):
+        lang1 =language
+        lang2 = input("Enter the language to be converted to ")
+        translated_text = translate_text(text, lang1, lang2)
+        print(translated_text)
+        
+    else:
+        
+        lang1 = input("Enter the language from which conversion has to take place ")
+        lang2 = input("Enter the language to be converted to ")
+        translated_text = translate_text(text, lang1, lang2)
+        print(translated_text)
+
     engine = pyttsx3.init()
 
     if translated_text:

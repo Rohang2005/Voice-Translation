@@ -64,8 +64,8 @@ def main():
         #print("Translated Text: ", translated_text)
         #engine.say(translated_text)
         #engine.runAndWait()
-        tts = gTTS(translated_text, lang=lang2)
-        tts.save("output.mp3")
+        mpplay = gTTS(translated_text, lang=lang2)
+        mpplay.save("output.mp3")
         os.system("start output.mp3")
 
 if __name__ == "__main__":
